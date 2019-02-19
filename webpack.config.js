@@ -15,6 +15,7 @@ function configureWebpack(mode) {
     entry: {
       app: './src/index.js'
     },
+    mode,
     optimization: {
       minimizer: [
         new UglifyJSPlugin(),
