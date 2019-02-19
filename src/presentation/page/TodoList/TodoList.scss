@@ -1,0 +1,26 @@
+@import "../../../scss/_variables.scss";
+.todoList {
+  .editColumn {
+    width: 60px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  .titleColumn {
+    vertical-align: middle;
+  }
+
+  .buttonLabel {
+    display: none;
+  }
+
+  @media (min-width: $page-breakpoint) {
+    .buttonLabel {
+      display: inline;
+    }
+    .editColumn {
+      width: 120px;
+      text-align: center;
+      vertical-align: middle;
+    }
+  }
+}

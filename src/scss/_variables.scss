@@ -1,0 +1,10 @@
+@import "~bootstrap/scss/_functions.scss";
+@import "~bootstrap/scss/_variables.scss";
+$page-breakpoint: 768px;
+$brand-title-color: #fff;
+
+$rt-color-default: $primary;
+$rt-color-info: $info;
+$rt-color-success: $success;
+$rt-color-warning: $warning;
+$rt-color-error: $danger;

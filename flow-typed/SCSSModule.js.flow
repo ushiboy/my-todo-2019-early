@@ -1,0 +1,4 @@
+/* @flow */
+declare module 'SCSSModule' {
+  declare module.exports: any;
+}
