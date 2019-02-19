@@ -1,7 +1,7 @@
 /* @flow */
 import type { AppState, RouteState } from '../../../ducks/types.js';
 import type { EditTodoState } from '../../../ducks/editTodo/types.js';
-import type { ConnectedProps } from '../../../ducks/types.js';
+import type { ConnectedProps, Dispatch } from '../../../ducks/types.js';
 import React from 'react';
 import { connect } from 'react-redux';
 import { LoadingMask } from '../../components/LoadingMask/LoadingMask.js';
@@ -105,7 +105,13 @@ export class TodoForm extends React.Component<Props> {
   }
 }
 
-function TitleText(props) {
+type TitleTextProps = {
+  title: string,
+  dispatch: Dispatch,
+  error: ?string
+};
+
+function TitleText(props: TitleTextProps) {
   const { title, dispatch, error } = props;
   const cls = error !== null ? 'is-invalid' : '';
   return (
@@ -129,7 +135,11 @@ function TitleText(props) {
   );
 }
 
-function RemoveButton(props) {
+type RemoveButtonProps = {
+  dispatch: Dispatch
+};
+
+function RemoveButton(props: RemoveButtonProps) {
   const { dispatch } = props;
   return (
     <button

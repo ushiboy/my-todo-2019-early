@@ -2,6 +2,7 @@
 import type { AppState, RouteState } from '../../../ducks/types.js';
 import type { TodosState } from '../../../ducks/todos/types.js';
 import type { ConnectedProps } from '../../../ducks/types.js';
+import type { Todo } from '../../../domain/Todo.js';
 import styles from './TodoList.scss';
 import React from 'react';
 import { Link } from 'tridoron';
@@ -96,7 +97,11 @@ export class TodoList extends React.Component<Props> {
   }
 }
 
-function TodoRow(props) {
+type TodoRawProps = {
+  todo: Todo
+};
+
+function TodoRow(props: TodoRawProps) {
   const { todo } = props;
   return (
     <tr data-test="todo-list-row">
