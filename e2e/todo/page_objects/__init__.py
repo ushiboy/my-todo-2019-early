@@ -15,9 +15,9 @@ class PageObject(object):
     def __init__(self, driver):
         self.driver = driver
 
-    def _wait_show(self, xpath, timeout=5):
+    def _wait_show(self, css_selector, timeout=5):
         WebDriverWait(self.driver, timeout).until(
-            EC.presence_of_element_located((By.XPATH, xpath))
+            EC.presence_of_element_located((By.CSS_SELECTOR, css_selector))
         )
 
     def _focus_field(self, el):
