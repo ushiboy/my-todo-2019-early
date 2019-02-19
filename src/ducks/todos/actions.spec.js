@@ -13,7 +13,7 @@ import {
   LocalStorageRepository,
   MemoryStorage
 } from '../../infrastructure/LocalStorageRepository.js';
-import { encodeDateToISO8601 } from '../../utils/DateUtils.js';
+import { assertEqualTodo, assertEqualDate } from '../../testHelper.js';
 
 const storage = new MemoryStorage();
 const middlewares = [
@@ -59,17 +59,11 @@ describe('todos', function() {
 
         const [t1, t2] = a.payload.todos;
         const [r1, r2] = todos;
-        assert(t1.id === r1.id);
-        assert(t1.title === r1.title);
-        assert(t1.complete === r1.complete);
-        assert(t1.updatedAt.constructor === Date);
-        assert(encodeDateToISO8601(t1.updatedAt) === r1.updatedAt);
+        assertEqualTodo(t1, r1);
+        assertEqualDate(t1.updatedAt, r1.updatedAt);
 
-        assert(t2.id === r2.id);
-        assert(t2.title === r2.title);
-        assert(t2.complete === r2.complete);
-        assert(t2.updatedAt.constructor === Date);
-        assert(encodeDateToISO8601(t2.updatedAt) === r2.updatedAt);
+        assertEqualTodo(t2, r2);
+        assertEqualDate(t2.updatedAt, r2.updatedAt);
       });
     });
     describe('changeVisibleFilter()', () => {

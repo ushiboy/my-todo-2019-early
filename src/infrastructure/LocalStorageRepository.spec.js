@@ -3,7 +3,7 @@ import {
   LocalStorageRepository,
   MemoryStorage
 } from './LocalStorageRepository.js';
-import { encodeDateToISO8601 } from '../utils/DateUtils.js';
+import { assertEqualTodo, assertEqualDate } from '../testHelper.js';
 
 describe('LocalStorageRepository', function() {
   const todos = [
@@ -35,17 +35,11 @@ describe('LocalStorageRepository', function() {
       assert(r.length === 2);
       const [t1, t2] = r;
       const [r1, r2] = todos;
-      assert(t1.id === r1.id);
-      assert(t1.title === r1.title);
-      assert(t1.complete === r1.complete);
-      assert(t1.updatedAt.constructor === Date);
-      assert(encodeDateToISO8601(t1.updatedAt) === r1.updatedAt);
+      assertEqualTodo(t1, r1);
+      assertEqualDate(t1.updatedAt, r1.updatedAt);
 
-      assert(t2.id === r2.id);
-      assert(t2.title === r2.title);
-      assert(t2.complete === r2.complete);
-      assert(t2.updatedAt.constructor === Date);
-      assert(encodeDateToISO8601(t2.updatedAt) === r2.updatedAt);
+      assertEqualTodo(t2, r2);
+      assertEqualDate(t2.updatedAt, r2.updatedAt);
     });
   });
   describe('add()', () => {
@@ -92,11 +86,8 @@ describe('LocalStorageRepository', function() {
       it('ストレージから取得して返す', async () => {
         const t = await repo.fetchById(1);
         const [r] = todos;
-        assert(t.id === r.id);
-        assert(t.title === r.title);
-        assert(t.complete === r.complete);
-        assert(t.updatedAt.constructor === Date);
-        assert(encodeDateToISO8601(t.updatedAt) === r.updatedAt);
+        assertEqualTodo(t, r);
+        assertEqualDate(t.updatedAt, r.updatedAt);
       });
     });
     context('指定IDに該当するTodoが存在しない場合', () => {
@@ -129,9 +120,7 @@ describe('LocalStorageRepository', function() {
         };
         await repo.update(t);
         const t1 = JSON.parse(storage.getItem('1'));
-        assert(t1.id === t.id);
-        assert(t1.title === t.title);
-        assert(t1.complete === t.complete);
+        assertEqualTodo(t1, t);
       });
     });
     context('該当するTodoが存在しない場合', () => {

@@ -16,7 +16,7 @@ import {
   LocalStorageRepository,
   MemoryStorage
 } from '../../infrastructure/LocalStorageRepository.js';
-import { encodeDateToISO8601 } from '../../utils/DateUtils.js';
+import { assertEqualTodo, assertEqualDate } from '../../testHelper.js';
 
 const storage = new MemoryStorage();
 const middlewares = [
@@ -66,11 +66,8 @@ describe('editTodo', function() {
 
         const { todo } = a.payload;
         const [r] = todos;
-        assert(todo.id === r.id);
-        assert(todo.title === r.title);
-        assert(todo.complete === r.complete);
-        assert(todo.updatedAt.constructor === Date);
-        assert(encodeDateToISO8601(todo.updatedAt) === r.updatedAt);
+        assertEqualTodo(todo, r);
+        assertEqualDate(todo.updatedAt, r.updatedAt);
       });
     });
     describe('save()', () => {
@@ -130,9 +127,7 @@ describe('editTodo', function() {
         });
         it('更新データをリポジトリに適用する', () => {
           const r = JSON.parse(storage.getItem('1'));
-          assert(modified.id === r.id);
-          assert(modified.title === r.title);
-          assert(modified.complete === r.complete);
+          assertEqualTodo(modified, r);
         });
       });
       context('バリデーションエラーが発生した場合', () => {

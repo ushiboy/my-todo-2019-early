@@ -29,7 +29,7 @@ export type ThunkAction = (
   infrastructure: Infrastructure
 ) => Promise<void>;
 
-export type Dispatch = (a: Action) => void;
+export type Dispatch = (a: ThunkAction | Action) => void;
 
 export type GetState = () => AppState;
 
@@ -38,6 +38,6 @@ export type Infrastructure = {
 };
 
 export type ConnectedProps = {
-  dispatch: (a: ThunkAction | Action) => void,
+  dispatch: Dispatch,
   router: Router
 };

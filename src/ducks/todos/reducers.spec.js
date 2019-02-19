@@ -2,6 +2,7 @@ const assert = require('power-assert');
 import { LOADING, LOADED, CHANGE_VISIBLE_FILTER } from './actions.js';
 import { todos, initState } from './reducers.js';
 import { decodeISO8601ToDate } from '../../utils/DateUtils.js';
+import { assertEqualTodo } from '../../testHelper.js';
 
 describe('todos', function() {
   describe('reducer', () => {
@@ -46,29 +47,18 @@ describe('todos', function() {
       });
       it('取得したTodoリストをrecordsに格納して持つ', () => {
         const { records } = state;
-
         const [t1, t2] = records;
         const [r1, r2] = payloadTodos;
-        assert(t1.id === r1.id);
-        assert(t1.title === r1.title);
-        assert(t1.complete === r1.complete);
-
-        assert(t2.id === r2.id);
-        assert(t2.title === r2.title);
-        assert(t2.complete === r2.complete);
+        assertEqualTodo(t1, r1);
+        assertEqualTodo(t2, r2);
       });
       it('取得したTodoリストをフィルタしてvisibleRecordsに格納して持つ', () => {
         const { visibleRecords } = state;
 
         const [t1, t2] = visibleRecords;
         const [r1, r2] = payloadTodos;
-        assert(t1.id === r1.id);
-        assert(t1.title === r1.title);
-        assert(t1.complete === r1.complete);
-
-        assert(t2.id === r2.id);
-        assert(t2.title === r2.title);
-        assert(t2.complete === r2.complete);
+        assertEqualTodo(t1, r1);
+        assertEqualTodo(t2, r2);
       });
     });
     context(`${CHANGE_VISIBLE_FILTER}アクションの場合`, () => {
@@ -160,13 +150,8 @@ describe('todos', function() {
           assert(visibleRecords.length === 2);
           const [t1, t2] = visibleRecords;
           const [r1, r2] = records;
-          assert(t1.id === r1.id);
-          assert(t1.title === r1.title);
-          assert(t1.complete === r1.complete);
-
-          assert(t2.id === r2.id);
-          assert(t2.title === r2.title);
-          assert(t2.complete === r2.complete);
+          assertEqualTodo(t1, r1);
+          assertEqualTodo(t2, r2);
         });
       });
     });
