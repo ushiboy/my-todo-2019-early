@@ -1,11 +1,13 @@
 const path = require('path');
 const fs = require('fs');
+const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 function configureWebpack(mode) {
   mode = mode || 'development';
+  const enableServiceWorker = mode === 'production';
   if (mode === 'testing') {
     mode = 'production';
   }
@@ -13,7 +15,8 @@ function configureWebpack(mode) {
 
   const base =  {
     entry: {
-      app: './src/index.js'
+      app: './src/index.js',
+      sw: './src/sw.js'
     },
     mode,
     optimization: {
@@ -30,7 +33,7 @@ function configureWebpack(mode) {
           loader: 'babel-loader'
         },
         {
-          test: /\.(woff2?|ttf|eot|svg)$/,
+          test: /fonts\/.*\.(woff2?|ttf|eot|svg)$/,
           loader: 'file-loader',
           options: {
             name: 'fonts/[name].[ext]'
@@ -44,7 +47,7 @@ function configureWebpack(mode) {
           }
         },
         {
-          test: /\.(jpg|png|gif)$/,
+          test: /images\/.*\.(jpg|png|gif|svg|ico)$/,
           loader: 'file-loader',
           options: {
             name: 'images/[name].[ext]'
@@ -105,6 +108,9 @@ function configureWebpack(mode) {
       ]
     },
     plugins: [
+      new webpack.DefinePlugin({
+        'ENABLE_SERVICE_WORKER': JSON.stringify(enableServiceWorker)
+      }),
       new MiniCssExtractPlugin({
         filename: '[name].bundle.css',
         chunkFilename: '[id].css'
