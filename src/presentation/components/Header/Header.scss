@@ -1,7 +1,11 @@
 @import "../../../scss/_variables.scss";
 
 .head {
+  background-color: $header-bg-color;
   .sub {
     color: $brand-title-color;
+    &:hover {
+      color: $brand-title-color;
+    }
   }
 }
