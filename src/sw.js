@@ -1,6 +1,6 @@
 import '@babel/polyfill';
 const CACHE_NAME = 'my-todo-cache-v1';
-const urlsToCache = ['/', '/app.bundle.css', '/app.bundle.js'];
+const urlsToCache = ['app.bundle.css', 'app.bundle.js'];
 
 self.addEventListener('install', event => {
   event.waitUntil(
