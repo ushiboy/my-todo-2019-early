@@ -1,11 +1,6 @@
 import '@babel/polyfill';
 const CACHE_NAME = 'my-todo-cache-v1';
-const urlsToCache = [
-  '/',
-  '/app.bundle.css',
-  '/app.bundle.js',
-  '/fonts/fa-solid-900.woff2'
-];
+const urlsToCache = ['/', '/app.bundle.css', '/app.bundle.js'];
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -20,9 +15,18 @@ self.addEventListener('fetch', event => {
     caches.match(event.request).then(response => {
       if (response) {
         return response;
-      } else {
-        return fetch(event.request);
       }
+      const request = event.request.clone();
+      return fetch(request).then(response => {
+        if (!response || response.status !== 200 || response.type !== 'basic') {
+          return response;
+        }
+        const cacheResponse = response.clone();
+        caches.open(CACHE_NAME).then(function(cache) {
+          cache.put(event.request, cacheResponse);
+        });
+        return response;
+      });
     })
   );
 });
