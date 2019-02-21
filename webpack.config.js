@@ -33,7 +33,7 @@ function configureWebpack(mode) {
           loader: 'babel-loader'
         },
         {
-          test: /\.(woff2?|ttf|eot|svg)$/,
+          test: /fonts\/.*\.(woff2?|ttf|eot|svg)$/,
           loader: 'file-loader',
           options: {
             name: 'fonts/[name].[ext]'
@@ -47,7 +47,7 @@ function configureWebpack(mode) {
           }
         },
         {
-          test: /\.(jpg|png|gif)$/,
+          test: /images\/.*\.(jpg|png|gif|svg|ico)$/,
           loader: 'file-loader',
           options: {
             name: 'images/[name].[ext]'
