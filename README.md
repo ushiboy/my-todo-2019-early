@@ -61,6 +61,8 @@ $ pip install -r requirements.txt
 $ cd drivers
 $ wget https://chromedriver.storage.googleapis.com/73.0.3683.20/chromedriver_linux64.zip
 $ unzip chromedriver_linux64.zip
+$ wget https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz
+$ tar zxvf geckodriver-v0.24.0-linux64.tar.gz
 ```
 
 #### テスト実行
@@ -84,4 +86,10 @@ $ py.test todo
 
 ```
 $ HEADLESS=1 py.test todo
+```
+
+デフォルトではChromeを使うようになっているので、Firefoxで行う場合は`BROWSER=Firefox`環境変数を指定する。
+
+```
+$ BROWSER=Firefox py.test todo
 ```
