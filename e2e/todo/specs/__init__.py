@@ -9,12 +9,20 @@ class E2ETest(unittest.TestCase):
     def setUp(self):
         self.target_host = os.environ.get('SERVER_HOST', 'localhost')
         use_headless = os.environ.get('HEADLESS', False)
+        browser = os.environ.get('BROWSER', 'Chrome')
 
-        driver_path = os.path.join(DRIVERS_DIR_PATH, 'chromedriver')
-        options = webdriver.chrome.options.Options()
-        if use_headless:
-            options.add_argument('--headless')
-        self.driver = webdriver.Chrome(executable_path=driver_path, options=options)
+        if browser == 'Chrome':
+            driver_path = os.path.join(DRIVERS_DIR_PATH, 'chromedriver')
+            options = webdriver.chrome.options.Options()
+            if use_headless:
+                options.add_argument('--headless')
+            self.driver = webdriver.Chrome(executable_path=driver_path, options=options)
+        elif browser == 'Firefox':
+            driver_path = os.path.join(DRIVERS_DIR_PATH, 'geckodriver')
+            options = webdriver.firefox.options.Options()
+            if use_headless:
+                options.add_argument('-headless')
+            self.driver = webdriver.Firefox(executable_path=driver_path, options=options)
 
     def tearDown(self):
         self.driver.close()
