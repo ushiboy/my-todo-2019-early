@@ -13,6 +13,7 @@ import { validate } from '../../domain/Todo.js';
 export const CREATE_DRAFT = 'editTodo/CREATE_DRAFT';
 export const LOADING = 'editTodo/LOADING';
 export const LOADED = 'editTodo/LOADED';
+export const LOAD_FAILED = 'editTodo/LOAD_FAILED';
 export const CHANGE_TITLE = 'editTodo/CHANGE_TITLE';
 export const CHANGE_COMPLETE = 'editTodo/CHANGE_COMPLETE';
 export const INVALID = 'editTodo/INVALID';
@@ -28,8 +29,12 @@ export function createDraft(): CreateDraftAction {
 export function fetchById(id: TodoId): ThunkAction {
   return async (dispatch, getState, { todoRepository }) => {
     dispatch({ type: LOADING });
-    const todo = await todoRepository.fetchById(id);
-    dispatch({ type: LOADED, payload: { todo } });
+    try {
+      const todo = await todoRepository.fetchById(id);
+      dispatch({ type: LOADED, payload: { todo } });
+    } catch (e) {
+      dispatch({ type: LOAD_FAILED });
+    }
   };
 }
 

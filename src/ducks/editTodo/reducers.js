@@ -6,6 +6,7 @@ import {
   CHANGE_COMPLETE,
   LOADING,
   LOADED,
+  LOAD_FAILED,
   INVALID,
   SAVE_SUCCESS,
   REMOVE_SUCCESS,
@@ -44,6 +45,15 @@ export function editTodo(
           ...todo
         },
         loading: false
+      };
+    }
+    case LOAD_FAILED: {
+      return {
+        ...state,
+        loading: false,
+        loadFailed: true,
+        message: '対象データの取得に失敗しました',
+        messageType: 'danger'
       };
     }
     case CHANGE_TITLE: {
@@ -109,6 +119,7 @@ export function initState(): EditTodoState {
     fieldErrors: clearTodoError(),
     loading: false,
     syncCompleted: false,
+    loadFailed: false,
     message: '',
     messageType: ''
   };

@@ -6,6 +6,7 @@ export type EditTodoState = {
   fieldErrors: TodoError,
   loading: boolean,
   syncCompleted: boolean,
+  loadFailed: boolean,
   message: string,
   messageType: string
 };
@@ -37,6 +38,10 @@ export type LoadedAction = {
   payload: {
     todo: Todo
   }
+};
+
+export type LoadFailedAction = {
+  type: 'editTodo/LOAD_FAILED'
 };
 
 export type InvalidTodoAction = {
@@ -71,6 +76,7 @@ export type Action =
   | ChangeCompleteAction
   | LoadingAction
   | LoadedAction
+  | LoadFailedAction
   | InvalidTodoAction
   | SaveSuccessAction
   | RemoveSuccessAction

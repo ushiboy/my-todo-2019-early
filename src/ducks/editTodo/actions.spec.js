@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import {
   LOADING,
   LOADED,
+  LOAD_FAILED,
   INVALID,
   SAVE_SUCCESS,
   REMOVE_SUCCESS,
@@ -51,23 +52,40 @@ describe('editTodo', function() {
       storage.clear();
     });
     describe('fetchById()', () => {
-      let store;
-      beforeEach(() => {
-        store = mockStore({ editTodo: initState() });
-        return store.dispatch(fetchById(1));
-      });
-      it('データ取得前にLOADINGアクションを実行する', () => {
-        const [a] = store.getActions();
-        assert(a.type === LOADING);
-      });
-      it('データ取得完了後にLOADEDアクションを実行する', () => {
-        const [, a] = store.getActions();
-        assert(a.type === LOADED);
+      context('該当データが存在する場合', () => {
+        let store;
+        beforeEach(() => {
+          store = mockStore({ editTodo: initState() });
+          return store.dispatch(fetchById(1));
+        });
+        it('データ取得前にLOADINGアクションを実行する', () => {
+          const [a] = store.getActions();
+          assert(a.type === LOADING);
+        });
+        it('データ取得完了後にLOADEDアクションを実行する', () => {
+          const [, a] = store.getActions();
+          assert(a.type === LOADED);
 
-        const { todo } = a.payload;
-        const [r] = todos;
-        assertEqualTodo(todo, r);
-        assertEqualDate(todo.updatedAt, r.updatedAt);
+          const { todo } = a.payload;
+          const [r] = todos;
+          assertEqualTodo(todo, r);
+          assertEqualDate(todo.updatedAt, r.updatedAt);
+        });
+      });
+      context('該当データが存在しない場合', () => {
+        let store;
+        beforeEach(() => {
+          store = mockStore({ editTodo: initState() });
+          return store.dispatch(fetchById(99));
+        });
+        it('データ取得前にLOADINGアクションを実行する', () => {
+          const [a] = store.getActions();
+          assert(a.type === LOADING);
+        });
+        it('データ取得失敗後にLOAD_FAILEDアクションを実行する', () => {
+          const [, a] = store.getActions();
+          assert(a.type === LOAD_FAILED);
+        });
       });
     });
     describe('save()', () => {
