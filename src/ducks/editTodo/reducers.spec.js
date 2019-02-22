@@ -5,6 +5,7 @@ import {
   CHANGE_COMPLETE,
   LOADING,
   LOADED,
+  LOAD_FAILED,
   INVALID,
   SAVE_SUCCESS,
   REMOVE_SUCCESS,
@@ -83,6 +84,28 @@ describe('editTodo', function() {
       });
       it('ロード完了にする', () => {
         assert(state.loading === false);
+      });
+    });
+    context(`${LOAD_FAILED}アクションの場合`, () => {
+      let state;
+      beforeEach(() => {
+        const bs = {
+          ...initState(),
+          loading: true
+        };
+        state = editTodo(bs, {
+          type: LOAD_FAILED
+        });
+      });
+      it('ロード完了にする', () => {
+        assert(state.loading === false);
+      });
+      it('ロード失敗にする', () => {
+        assert(state.loadFailed === true);
+      });
+      it('取得失敗メッセージを設定する', () => {
+        assert(state.message === '対象データの取得に失敗しました');
+        assert(state.messageType === 'danger');
       });
     });
     context(`${CHANGE_TITLE}アクションの場合`, () => {
@@ -196,6 +219,7 @@ describe('editTodo', function() {
             draft: false
           },
           loading: true,
+          loadFailed: true,
           syncCompleted: true,
           message: 'm',
           messageType: 'mt'
@@ -210,6 +234,9 @@ describe('editTodo', function() {
         assert(fields.title === '');
         assert(fields.complete === false);
         assert(fields.draft === true);
+      });
+      it('ロード失敗なしにする', () => {
+        assert(state.loadFailed === false);
       });
       it('同期を未完了にする', () => {
         assert(state.syncCompleted === false);
