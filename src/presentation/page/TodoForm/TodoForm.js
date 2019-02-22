@@ -37,7 +37,7 @@ export class TodoForm extends React.Component<Props> {
   }
   componentDidUpdate() {
     const { editTodo, router } = this.props;
-    if (editTodo.syncCompleted) {
+    if (editTodo.syncCompleted || editTodo.loadFailed) {
       router.navigateTo('/');
     }
   }
