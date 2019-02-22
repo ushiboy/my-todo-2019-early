@@ -93,3 +93,17 @@ $ HEADLESS=1 py.test todo
 ```
 $ BROWSER=Firefox py.test todo
 ```
+
+## Dockerでのビルド
+
+ビルド用のDockerイメージを作成する。
+
+```
+$ bin/create_docker_image.sh
+```
+
+ビルド用Docker内でビルドする。
+
+```
+$ bin/build_on_docker.sh
+```
