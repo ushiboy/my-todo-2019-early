@@ -4,7 +4,6 @@ SCRIPT_DIR=$(cd $(dirname ${0}) && pwd)
 cd "$SCRIPT_DIR/.."
 DOCKER_IMAGE_NAME="nodejs10-for-frontend-build"
 PROJECT_ROOT_DIR=`pwd`
-USER=`whoami`
 USER_ID=`id -u`
 GROUP_ID=`id -g`
 
