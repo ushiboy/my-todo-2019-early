@@ -94,6 +94,41 @@ $ HEADLESS=1 py.test todo
 $ BROWSER=Firefox py.test todo
 ```
 
+#### 並列にテスト実行
+
+(注意) `docker-compose`が必要
+
+`e2e/e2e.config.yml.example`をコピーして`e2e/e2e.config.yml`ファイルを作成し、
+並列にするワーカーの数分だけ`web_port`を設定する。
+
+```yaml
+workers:
+  - web_port: 8080
+  - web_port: 8081
+  - web_port: 8082
+  - web_port: 8083
+```
+
+テスト用サーバを起動する。
+
+```
+$ cd e2e
+$ source venv/bin/activate
+$ ./startup-servers
+```
+
+`-n`オプションでワーカーの数を指定して、テストを実行する。
+
+```
+$ py.test -n 4 todo
+```
+
+テスト用サーバを停止する。
+
+```
+$ ./halt-servers
+```
+
 ## Dockerでのビルド
 
 ビルド用のDockerイメージを作成する。
