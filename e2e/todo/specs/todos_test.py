@@ -19,7 +19,7 @@ def init_data(driver):
 class TodosTest(E2ETest):
 
     def test_show_todo_list_rows(self):
-        p = IndexPage(self.driver, self.target_host)\
+        p = IndexPage(self.driver, self.target_origin)\
                 .open()
 
         init_data(self.driver)
@@ -35,7 +35,7 @@ class TodosTest(E2ETest):
         assert r3.get_title() == 't3'
 
     def test_filter_todo_list_rows(self):
-        p = IndexPage(self.driver, self.target_host)\
+        p = IndexPage(self.driver, self.target_origin)\
                 .open()
 
         init_data(self.driver)
@@ -72,7 +72,7 @@ class TodosTest(E2ETest):
         assert r3.get_title() == 't3'
 
     def test_create_new_todo(self):
-        p = IndexPage(self.driver, self.target_host)\
+        p = IndexPage(self.driver, self.target_origin)\
                 .open()\
                 .wait_show_todo_list()
         assert len(p.get_todo_rows()) == 0
@@ -90,7 +90,7 @@ class TodosTest(E2ETest):
         assert rows[0].get_title() == 'test'
 
     def test_edit_todo(self):
-        p = IndexPage(self.driver, self.target_host)\
+        p = IndexPage(self.driver, self.target_origin)\
                 .open()
 
         init_data(self.driver)
@@ -133,7 +133,7 @@ class TodosTest(E2ETest):
         assert r2.get_title() == 'modified'
 
     def test_remove_todo(self):
-        p = IndexPage(self.driver, self.target_host)\
+        p = IndexPage(self.driver, self.target_origin)\
                 .open()
 
         init_data(self.driver)
