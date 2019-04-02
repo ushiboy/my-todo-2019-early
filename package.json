@@ -57,15 +57,13 @@
   },
   "dependencies": {
     "@ushiboy/cyclone": "^0.2.0",
+    "@ushiboy/react-cyclone": "^0.1.0",
     "bootstrap": "^4.2.1",
     "moment": "^2.24.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-loading-overlay": "^1.0.1",
-    "react-redux": "^6.0.0",
     "react-toastify": "^4.5.2",
-    "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0",
     "tridoron": "^0.3.3"
   }
 }

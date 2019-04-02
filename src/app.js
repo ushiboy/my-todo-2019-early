@@ -6,7 +6,7 @@ import { createStore } from '@ushiboy/cyclone';
 import { Router, Hash } from 'tridoron';
 import { createAdapter } from './tridoronPlugin.js';
 import { update, initState } from './ducks';
-import { Provider } from 'react-redux';
+import { Provider } from '@ushiboy/react-cyclone';
 import { ConnectedMain } from './presentation/layout/Main/Main.js';
 import { LocalStorageRepository } from './infrastructure/LocalStorageRepository.js';
 import { routes } from './presentation/routes.js';

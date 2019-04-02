@@ -2,12 +2,6 @@
 declare module '@babel/polyfill' {
   declare module.exports: any;
 }
-declare module 'redux-thunk' {
-  declare module.exports: any;
-}
-declare module 'react-redux' {
-  declare module.exports: any;
-}
 declare module 'react-loading-overlay' {
   declare module.exports: any;
 }
@@ -18,5 +12,8 @@ declare module 'tridoron' {
   declare module.exports: any;
 }
 declare module 'tridoron/lib/adapters/redux.js' {
+  declare module.exports: any;
+}
+declare module '@ushiboy/react-cyclone' {
   declare module.exports: any;
 }

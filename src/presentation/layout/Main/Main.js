@@ -4,7 +4,7 @@ import React from 'react';
 import { Router } from 'tridoron';
 import styles from './Main.scss';
 import { Header } from '../../components/Header/Header.js';
-import { connect } from 'react-redux';
+import { connect } from '@ushiboy/react-cyclone';
 import { ToastContainer } from 'react-toastify';
 
 type Props = {

@@ -6,7 +6,7 @@ import type { Todo } from '../../../domain/Todo.js';
 import styles from './TodoList.scss';
 import React from 'react';
 import { Link } from 'tridoron';
-import { connect } from 'react-redux';
+import { connect } from '@ushiboy/react-cyclone';
 import {
   fetchTodos,
   changeVisibleFilter

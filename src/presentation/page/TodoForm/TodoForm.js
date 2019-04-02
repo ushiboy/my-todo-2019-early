@@ -3,7 +3,7 @@ import type { AppState, RouteState } from '../../../ducks/types.js';
 import type { EditTodoState } from '../../../ducks/editTodo/types.js';
 import type { ConnectedProps, Dispatch } from '../../../ducks/types.js';
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect } from '@ushiboy/react-cyclone';
 import { LoadingMask } from '../../components/LoadingMask/LoadingMask.js';
 import { Toast } from '../../components/Toast/Toast.js';
 import { Link } from 'tridoron';
