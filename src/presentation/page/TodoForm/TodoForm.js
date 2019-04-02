@@ -51,7 +51,7 @@ export class TodoForm extends React.Component<Props> {
 
     let removeButton = null;
     if (!draft) {
-      removeButton = <RemoveButton dispatch={dispatch} />;
+      removeButton = <RemoveButton dispatch={dispatch} editTodo={editTodo} />;
     }
     return (
       <div className={`card ${styles.todoForm}`} data-test="todo-form">
@@ -100,8 +100,8 @@ export class TodoForm extends React.Component<Props> {
   }
   onFormSubmit(e: Event) {
     e.preventDefault();
-    const { dispatch } = this.props;
-    dispatch(save());
+    const { dispatch, editTodo } = this.props;
+    dispatch(save(editTodo));
   }
 }
 
@@ -136,11 +136,12 @@ function TitleText(props: TitleTextProps) {
 }
 
 type RemoveButtonProps = {
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  editTodo: EditTodoState
 };
 
 function RemoveButton(props: RemoveButtonProps) {
-  const { dispatch } = props;
+  const { dispatch, editTodo } = props;
   return (
     <button
       type="button"
@@ -148,7 +149,7 @@ function RemoveButton(props: RemoveButtonProps) {
       className={`btn btn-danger ${styles.removeButton}`}
       onClick={() => {
         if (confirm('削除します')) {
-          dispatch(remove());
+          dispatch(remove(editTodo));
         }
       }}
     >

@@ -1,5 +1,7 @@
 /* @flow */
+import type { NoneAction } from '@ushiboy/cyclone';
 import type { Todo } from '../../domain/Todo.js';
+import type { InjectionAction } from '../types.js';
 
 export type VisibleFilter = 'all' | 'active' | 'completed';
 
@@ -28,4 +30,9 @@ export type ChangeVisibleFilterAction = {
   }
 };
 
-export type Action = LoadingAction | LoadedAction | ChangeVisibleFilterAction;
+export type Action =
+  | LoadingAction
+  | LoadedAction
+  | ChangeVisibleFilterAction
+  | NoneAction
+  | InjectionAction<LoadedAction>;

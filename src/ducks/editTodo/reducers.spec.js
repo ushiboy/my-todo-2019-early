@@ -31,7 +31,7 @@ describe('editTodo', function() {
           },
           syncCompleted: true
         };
-        state = editTodo(bs, {
+        [state] = editTodo(bs, {
           type: CREATE_DRAFT
         });
       });
@@ -48,8 +48,11 @@ describe('editTodo', function() {
     });
     context(`${LOADING}アクションの場合`, () => {
       it('ロード中にする', () => {
-        const s = editTodo(initState(), {
-          type: LOADING
+        const [s] = editTodo(initState(), {
+          type: LOADING,
+          payload: {
+            id: 1
+          }
         });
         assert(s.loading === true);
       });
@@ -68,7 +71,7 @@ describe('editTodo', function() {
           ...initState(),
           loading: true
         };
-        state = editTodo(bs, {
+        [state] = editTodo(bs, {
           type: LOADED,
           payload: {
             todo
@@ -93,7 +96,7 @@ describe('editTodo', function() {
           ...initState(),
           loading: true
         };
-        state = editTodo(bs, {
+        [state] = editTodo(bs, {
           type: LOAD_FAILED
         });
       });
@@ -112,7 +115,7 @@ describe('editTodo', function() {
       const title = 't2';
       let state;
       beforeEach(() => {
-        state = editTodo(initState(), {
+        [state] = editTodo(initState(), {
           type: CHANGE_TITLE,
           payload: {
             title
@@ -128,7 +131,7 @@ describe('editTodo', function() {
       const complete = true;
       let state;
       beforeEach(() => {
-        state = editTodo(initState(), {
+        [state] = editTodo(initState(), {
           type: CHANGE_COMPLETE,
           payload: {
             complete
@@ -146,7 +149,7 @@ describe('editTodo', function() {
       };
       let state;
       beforeEach(() => {
-        state = editTodo(initState(), {
+        [state] = editTodo(initState(), {
           type: INVALID,
           payload: {
             errors
@@ -160,7 +163,7 @@ describe('editTodo', function() {
     context(`${SAVE_SUCCESS}アクションの場合`, () => {
       let state;
       beforeEach(() => {
-        state = editTodo(initState(), {
+        [state] = editTodo(initState(), {
           type: SAVE_SUCCESS
         });
       });
@@ -175,7 +178,7 @@ describe('editTodo', function() {
     context(`${REMOVE_SUCCESS}アクションの場合`, () => {
       let state;
       beforeEach(() => {
-        state = editTodo(initState(), {
+        [state] = editTodo(initState(), {
           type: REMOVE_SUCCESS
         });
       });
@@ -195,7 +198,7 @@ describe('editTodo', function() {
             title: 'error'
           }
         };
-        state = editTodo(bs, {
+        [state] = editTodo(bs, {
           type: CLEAR_FIELD_ERROR,
           payload: {
             fieldName: 'title'
@@ -224,7 +227,7 @@ describe('editTodo', function() {
           message: 'm',
           messageType: 'mt'
         };
-        state = editTodo(bs, {
+        [state] = editTodo(bs, {
           type: CLEAR
         });
       });
