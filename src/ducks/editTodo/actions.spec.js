@@ -8,6 +8,7 @@ import {
   SAVE_SUCCESS,
   REMOVE_SUCCESS,
   fetchById,
+  fetchProcessById,
   saveProcess,
   removeProcess
 } from './actions.js';
@@ -49,40 +50,44 @@ describe('editTodo', function() {
       storage.clear();
     });
     describe('fetchById()', () => {
+      let store;
+      beforeEach(() => {
+        store = mockDispatcher(extra);
+        return store.dispatch(fetchById(1));
+      });
+      it('LOADINGアクションを実行する', () => {
+        const [a] = store.getActions();
+        assert(a.type === LOADING);
+        assert(a.payload.id === 1);
+      });
+    });
+    describe('fetchProcessById()', () => {
       context('該当データが存在する場合', () => {
         let store;
         beforeEach(() => {
           store = mockDispatcher(extra);
-          return store.dispatch(fetchById(1));
+          return store.dispatch(fetchProcessById(1));
         });
-        it('データ取得前にLOADINGアクションを実行する', () => {
+        it('LOADEDアクションを実行する', () => {
           const [a] = store.getActions();
-          assert(a.type === LOADING);
-        });
-        //it('データ取得完了後にLOADEDアクションを実行する', () => {
-        //  const [, a] = store.getActions();
-        //  assert(a.type === LOADED);
+          assert(a.type === LOADED);
 
-        //  const { todo } = a.payload;
-        //  const [r] = todos;
-        //  assertEqualTodo(todo, r);
-        //  assertEqualDate(todo.updatedAt, r.updatedAt);
-        //});
+          const { todo } = a.payload;
+          const [r] = todos;
+          assertEqualTodo(todo, r);
+          assertEqualDate(todo.updatedAt, r.updatedAt);
+        });
       });
       context('該当データが存在しない場合', () => {
         let store;
         beforeEach(() => {
           store = mockDispatcher(extra);
-          return store.dispatch(fetchById(99));
+          return store.dispatch(fetchProcessById(99));
         });
-        it('データ取得前にLOADINGアクションを実行する', () => {
+        it('LOAD_FAILEDアクションを実行する', () => {
           const [a] = store.getActions();
-          assert(a.type === LOADING);
+          assert(a.type === LOAD_FAILED);
         });
-        //it('データ取得失敗後にLOAD_FAILEDアクションを実行する', () => {
-        //  const [, a] = store.getActions();
-        //  assert(a.type === LOAD_FAILED);
-        //});
       });
     });
     describe('saveProcess()', () => {
