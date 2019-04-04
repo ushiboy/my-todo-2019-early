@@ -100,8 +100,8 @@ export class TodoForm extends React.Component<Props> {
   }
   onFormSubmit(e: Event) {
     e.preventDefault();
-    const { dispatch, editTodo } = this.props;
-    dispatch(save(editTodo));
+    const { dispatch } = this.props;
+    dispatch(save());
   }
 }
 
@@ -141,7 +141,7 @@ type RemoveButtonProps = {
 };
 
 function RemoveButton(props: RemoveButtonProps) {
-  const { dispatch, editTodo } = props;
+  const { dispatch } = props;
   return (
     <button
       type="button"
@@ -149,7 +149,7 @@ function RemoveButton(props: RemoveButtonProps) {
       className={`btn btn-danger ${styles.removeButton}`}
       onClick={() => {
         if (confirm('削除します')) {
-          dispatch(remove(editTodo));
+          dispatch(remove());
         }
       }}
     >

@@ -10,11 +10,15 @@ import {
   LOADED,
   LOAD_FAILED,
   INVALID,
+  SAVE,
   SAVE_SUCCESS,
+  REMOVE,
   REMOVE_SUCCESS,
   CLEAR_FIELD_ERROR,
   CLEAR,
-  fetchProcessById
+  fetchProcessById,
+  saveProcess,
+  removeProcess
 } from './actions.js';
 import {
   createDraftTodo,
@@ -93,6 +97,9 @@ export function editTodo(
         none()
       ];
     }
+    case SAVE: {
+      return [state, saveProcess(state)];
+    }
     case INVALID: {
       const { errors } = action.payload;
       return [
@@ -115,6 +122,9 @@ export function editTodo(
         },
         none()
       ];
+    }
+    case REMOVE: {
+      return [state, removeProcess(state)];
     }
     case REMOVE_SUCCESS: {
       return [

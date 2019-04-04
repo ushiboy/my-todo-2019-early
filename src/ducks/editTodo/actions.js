@@ -9,8 +9,10 @@ import type {
   LoadingAction,
   LoadedAction,
   LoadFailedAction,
+  SaveAction,
   SaveSuccessAction,
   InvalidTodoAction,
+  RemoveAction,
   RemoveSuccessAction,
   EditTodoState
 } from './types.js';
@@ -23,8 +25,10 @@ export const LOADED = 'editTodo/LOADED';
 export const LOAD_FAILED = 'editTodo/LOAD_FAILED';
 export const CHANGE_TITLE = 'editTodo/CHANGE_TITLE';
 export const CHANGE_COMPLETE = 'editTodo/CHANGE_COMPLETE';
+export const SAVE = 'editTodo/SAVE';
 export const INVALID = 'editTodo/INVALID';
 export const SAVE_SUCCESS = 'editTodo/SAVE_SUCCESS';
+export const REMOVE = 'editTodo/REMOVE';
 export const REMOVE_SUCCESS = 'editTodo/REMOVE_SUCCESS';
 export const CLEAR_FIELD_ERROR = 'editTodo/CLEAR_FIELD_ERROR';
 export const CLEAR = 'editTodo/CLEAR';
@@ -58,7 +62,11 @@ export function changeComplete(complete: boolean): ChangeCompleteAction {
   return { type: CHANGE_COMPLETE, payload: { complete } };
 }
 
-export function save(
+export function save(): SaveAction {
+  return { type: SAVE };
+}
+
+export function saveProcess(
   editTodo: EditTodoState
 ): InjectionAction<SaveSuccessAction | InvalidTodoAction> {
   return async ({ todoRepository }) => {
@@ -78,7 +86,11 @@ export function save(
   };
 }
 
-export function remove(
+export function remove(): RemoveAction {
+  return { type: REMOVE };
+}
+
+export function removeProcess(
   editTodo: EditTodoState
 ): InjectionAction<RemoveSuccessAction> {
   return async ({ todoRepository }) => {

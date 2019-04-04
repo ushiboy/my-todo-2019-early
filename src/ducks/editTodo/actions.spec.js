@@ -8,8 +8,8 @@ import {
   SAVE_SUCCESS,
   REMOVE_SUCCESS,
   fetchById,
-  save,
-  remove
+  saveProcess,
+  removeProcess
 } from './actions.js';
 import { initState } from './reducers.js';
 import {
@@ -85,7 +85,7 @@ describe('editTodo', function() {
         //});
       });
     });
-    describe('save()', () => {
+    describe('saveProcess()', () => {
       context('新規データの追加の場合', () => {
         const draft = {
           id: -1,
@@ -103,7 +103,7 @@ describe('editTodo', function() {
             }
           };
           store = mockDispatcher(extra);
-          return store.dispatch(save(editTodo));
+          return store.dispatch(saveProcess(editTodo));
         });
         it('SAVE_SUCCESSアクションを実行する', () => {
           const [a] = store.getActions();
@@ -132,7 +132,7 @@ describe('editTodo', function() {
             }
           };
           store = mockDispatcher(extra);
-          return store.dispatch(save(editTodo));
+          return store.dispatch(saveProcess(editTodo));
         });
         it('SAVE_SUCCESSアクションを実行する', () => {
           const [a] = store.getActions();
@@ -160,7 +160,7 @@ describe('editTodo', function() {
             }
           };
           store = mockDispatcher(extra);
-          return store.dispatch(save(editTodo));
+          return store.dispatch(saveProcess(editTodo));
         });
         it('INVALIDアクションを実行する', () => {
           const [a] = store.getActions();
@@ -169,7 +169,7 @@ describe('editTodo', function() {
         });
       });
     });
-    describe('remove()', () => {
+    describe('removeProcess()', () => {
       let store;
       beforeEach(() => {
         const editTodo = {
@@ -179,7 +179,7 @@ describe('editTodo', function() {
           }
         };
         store = mockDispatcher(extra);
-        return store.dispatch(remove(editTodo));
+        return store.dispatch(removeProcess(editTodo));
       });
       it('REMOVE_SUCCESSアクションを実行する', () => {
         const [a] = store.getActions();

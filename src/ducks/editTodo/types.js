@@ -48,6 +48,10 @@ export type LoadFailedAction = {
   type: 'editTodo/LOAD_FAILED'
 };
 
+export type SaveAction = {
+  type: 'editTodo/SAVE'
+};
+
 export type InvalidTodoAction = {
   type: 'editTodo/INVALID',
   payload: {
@@ -66,6 +70,10 @@ export type SaveSuccessAction = {
   type: 'editTodo/SAVE_SUCCESS'
 };
 
+export type RemoveAction = {
+  type: 'editTodo/REMOVE'
+};
+
 export type RemoveSuccessAction = {
   type: 'editTodo/REMOVE_SUCCESS'
 };
@@ -82,7 +90,9 @@ export type Action =
   | LoadedAction
   | LoadFailedAction
   | InvalidTodoAction
+  | SaveAction
   | SaveSuccessAction
+  | RemoveAction
   | RemoveSuccessAction
   | ClearFieldErrorAction
   | ClearAction
