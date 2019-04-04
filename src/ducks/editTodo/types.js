@@ -1,5 +1,6 @@
 /* @flow */
-import type { Todo, TodoError } from '../../domain/Todo.js';
+import type { NoneAction } from '@ushiboy/cyclone';
+import type { Todo, TodoError, TodoId } from '../../domain/Todo.js';
 
 export type EditTodoState = {
   fields: Todo,
@@ -30,7 +31,10 @@ export type ChangeCompleteAction = {
 };
 
 export type LoadingAction = {
-  type: 'editTodo/LOADING'
+  type: 'editTodo/LOADING',
+  payload: {
+    id: TodoId
+  }
 };
 
 export type LoadedAction = {
@@ -42,6 +46,10 @@ export type LoadedAction = {
 
 export type LoadFailedAction = {
   type: 'editTodo/LOAD_FAILED'
+};
+
+export type SaveAction = {
+  type: 'editTodo/SAVE'
 };
 
 export type InvalidTodoAction = {
@@ -62,6 +70,10 @@ export type SaveSuccessAction = {
   type: 'editTodo/SAVE_SUCCESS'
 };
 
+export type RemoveAction = {
+  type: 'editTodo/REMOVE'
+};
+
 export type RemoveSuccessAction = {
   type: 'editTodo/REMOVE_SUCCESS'
 };
@@ -78,7 +90,10 @@ export type Action =
   | LoadedAction
   | LoadFailedAction
   | InvalidTodoAction
+  | SaveAction
   | SaveSuccessAction
+  | RemoveAction
   | RemoveSuccessAction
   | ClearFieldErrorAction
-  | ClearAction;
+  | ClearAction
+  | NoneAction;

@@ -29,7 +29,9 @@ export type ThunkAction = (
   infrastructure: Infrastructure
 ) => Promise<void>;
 
-export type Dispatch = (a: ThunkAction | Action) => void;
+export type InjectionAction<T> = (infrastructure: Infrastructure) => Promise<T>;
+
+export type Dispatch = (a: InjectionAction<Action> | Action) => void;
 
 export type GetState = () => AppState;
 

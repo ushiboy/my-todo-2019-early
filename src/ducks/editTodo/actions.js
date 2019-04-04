@@ -1,11 +1,20 @@
 /* @flow */
-import type { ThunkAction } from '../types.js';
+import type { InjectionAction } from '../types.js';
 import type {
   CreateDraftAction,
   ChangeTitleAction,
   ChangeCompleteAction,
   ClearFieldErrorAction,
-  ClearAction
+  ClearAction,
+  LoadingAction,
+  LoadedAction,
+  LoadFailedAction,
+  SaveAction,
+  SaveSuccessAction,
+  InvalidTodoAction,
+  RemoveAction,
+  RemoveSuccessAction,
+  EditTodoState
 } from './types.js';
 import type { TodoId } from '../../domain/Todo.js';
 import { validate } from '../../domain/Todo.js';
@@ -16,8 +25,10 @@ export const LOADED = 'editTodo/LOADED';
 export const LOAD_FAILED = 'editTodo/LOAD_FAILED';
 export const CHANGE_TITLE = 'editTodo/CHANGE_TITLE';
 export const CHANGE_COMPLETE = 'editTodo/CHANGE_COMPLETE';
+export const SAVE = 'editTodo/SAVE';
 export const INVALID = 'editTodo/INVALID';
 export const SAVE_SUCCESS = 'editTodo/SAVE_SUCCESS';
+export const REMOVE = 'editTodo/REMOVE';
 export const REMOVE_SUCCESS = 'editTodo/REMOVE_SUCCESS';
 export const CLEAR_FIELD_ERROR = 'editTodo/CLEAR_FIELD_ERROR';
 export const CLEAR = 'editTodo/CLEAR';
@@ -26,14 +37,19 @@ export function createDraft(): CreateDraftAction {
   return { type: CREATE_DRAFT };
 }
 
-export function fetchById(id: TodoId): ThunkAction {
-  return async (dispatch, getState, { todoRepository }) => {
-    dispatch({ type: LOADING });
+export function fetchById(id: TodoId): LoadingAction {
+  return { type: LOADING, payload: { id } };
+}
+
+export function fetchProcessById(
+  id: TodoId
+): InjectionAction<LoadedAction | LoadFailedAction> {
+  return async ({ todoRepository }) => {
     try {
       const todo = await todoRepository.fetchById(id);
-      dispatch({ type: LOADED, payload: { todo } });
+      return { type: LOADED, payload: { todo } };
     } catch (e) {
-      dispatch({ type: LOAD_FAILED });
+      return { type: LOAD_FAILED };
     }
   };
 }
@@ -46,31 +62,41 @@ export function changeComplete(complete: boolean): ChangeCompleteAction {
   return { type: CHANGE_COMPLETE, payload: { complete } };
 }
 
-export function save(): ThunkAction {
-  return async (dispatch, getState, { todoRepository }) => {
-    const { editTodo } = getState();
+export function save(): SaveAction {
+  return { type: SAVE };
+}
+
+export function saveProcess(
+  editTodo: EditTodoState
+): InjectionAction<SaveSuccessAction | InvalidTodoAction> {
+  return async ({ todoRepository }) => {
     const { fields } = editTodo;
     const [valid, errors] = validate(fields);
     if (valid) {
       if (fields.draft) {
         await todoRepository.add(fields);
-        dispatch({ type: SAVE_SUCCESS });
+        return { type: SAVE_SUCCESS };
       } else {
         await todoRepository.update(fields);
-        dispatch({ type: SAVE_SUCCESS });
+        return { type: SAVE_SUCCESS };
       }
     } else {
-      dispatch({ type: INVALID, payload: { errors } });
+      return { type: INVALID, payload: { errors } };
     }
   };
 }
 
-export function remove(): ThunkAction {
-  return async (dispatch, getState, { todoRepository }) => {
-    const { editTodo } = getState();
+export function remove(): RemoveAction {
+  return { type: REMOVE };
+}
+
+export function removeProcess(
+  editTodo: EditTodoState
+): InjectionAction<RemoveSuccessAction> {
+  return async ({ todoRepository }) => {
     const { fields } = editTodo;
     await todoRepository.remove(fields);
-    dispatch({ type: REMOVE_SUCCESS });
+    return { type: REMOVE_SUCCESS };
   };
 }
 

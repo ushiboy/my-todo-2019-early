@@ -1,11 +1,11 @@
 const assert = require('power-assert');
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import { createMockStore } from '@ushiboy/cyclone-mock-store';
 import {
   LOADING,
   LOADED,
   CHANGE_VISIBLE_FILTER,
   fetchTodos,
+  fetchProcessTodos,
   changeVisibleFilter
 } from './actions.js';
 import { initState } from './reducers.js';
@@ -16,16 +16,25 @@ import {
 import { assertEqualTodo, assertEqualDate } from '../../testHelper.js';
 
 const storage = new MemoryStorage();
-const middlewares = [
-  thunk.withExtraArgument({
-    todoRepository: new LocalStorageRepository(storage)
-  })
-];
-const mockStore = configureMockStore(middlewares);
+const extra = {
+  todoRepository: new LocalStorageRepository(storage)
+};
+const { mockDispatcher } = createMockStore();
 
 describe('todos', function() {
   describe('actions', () => {
     describe('fetchTodos()', () => {
+      let store;
+      beforeEach(() => {
+        store = mockDispatcher(extra);
+        return store.dispatch(fetchTodos());
+      });
+      it('LOADINGアクションを実行する', () => {
+        const [a] = store.getActions();
+        assert(a.type === LOADING);
+      });
+    });
+    describe('fetchProcessTodos()', () => {
       const todos = [
         {
           id: 1,
@@ -46,15 +55,11 @@ describe('todos', function() {
 
       let store;
       beforeEach(() => {
-        store = mockStore({ todos: initState() });
-        return store.dispatch(fetchTodos());
+        store = mockDispatcher(extra);
+        return store.dispatch(fetchProcessTodos());
       });
-      it('データ取得前にLOADINGアクションを実行する', () => {
+      it('LOADEDアクションを実行する', () => {
         const [a] = store.getActions();
-        assert(a.type === LOADING);
-      });
-      it('データ取得完了後にLOADEDアクションを実行する', () => {
-        const [, a] = store.getActions();
         assert(a.type === LOADED);
 
         const [t1, t2] = a.payload.todos;
@@ -67,32 +72,32 @@ describe('todos', function() {
       });
     });
     describe('changeVisibleFilter()', () => {
-      it('CHANGE_VISIBLE_FILTERアクションを実行する', () => {
-        const store = mockStore({ todos: initState() });
-        store.dispatch(changeVisibleFilter('active'));
+      it('CHANGE_VISIBLE_FILTERアクションを実行する', async () => {
+        const store = mockDispatcher(extra);
+        await store.dispatch(changeVisibleFilter('active'));
         const [a] = store.getActions();
         assert(a.type === CHANGE_VISIBLE_FILTER);
       });
       context('"active"が渡された場合', () => {
-        it('"active"をフィルターとする', () => {
-          const store = mockStore({ todos: initState() });
-          store.dispatch(changeVisibleFilter('active'));
+        it('"active"をフィルターとする', async () => {
+          const store = mockDispatcher(extra);
+          await store.dispatch(changeVisibleFilter('active'));
           const [a] = store.getActions();
           assert(a.payload.filter === 'active');
         });
       });
       context('"completed"が渡された場合', () => {
-        it('"completed"をフィルターとする', () => {
-          const store = mockStore({ todos: initState() });
-          store.dispatch(changeVisibleFilter('completed'));
+        it('"completed"をフィルターとする', async () => {
+          const store = mockDispatcher(extra);
+          await store.dispatch(changeVisibleFilter('completed'));
           const [a] = store.getActions();
           assert(a.payload.filter === 'completed');
         });
       });
       context('"active","completed"以外が渡された場合', () => {
-        it('"all"をフィルターとする', () => {
-          const store = mockStore({ todos: initState() });
-          store.dispatch(changeVisibleFilter(''));
+        it('"all"をフィルターとする', async () => {
+          const store = mockDispatcher(extra);
+          await store.dispatch(changeVisibleFilter(''));
           const [a] = store.getActions();
           assert(a.payload.filter === 'all');
         });

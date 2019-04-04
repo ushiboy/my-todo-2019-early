@@ -1,21 +1,28 @@
 /* @flow */
-import type { ThunkAction } from '../types.js';
-import type { ChangeVisibleFilterAction } from './types.js';
+import type { InjectionAction } from '../types.js';
+import type {
+  ChangeVisibleFilterAction,
+  LoadingAction,
+  LoadedAction
+} from './types.js';
 
 export const LOADING = 'todos/LOADING';
 export const LOADED = 'todos/LOADED';
 export const CHANGE_VISIBLE_FILTER = 'todos/CHANGE_VISIBLE_FILTER';
 
-export function fetchTodos(): ThunkAction {
-  return async (dispatch, getState, { todoRepository }) => {
-    dispatch({ type: LOADING });
+export function fetchTodos(): LoadingAction {
+  return { type: LOADING };
+}
+
+export function fetchProcessTodos(): InjectionAction<LoadedAction> {
+  return async ({ todoRepository }) => {
     const todos = await todoRepository.fetchAll();
-    dispatch({
+    return {
       type: LOADED,
       payload: {
         todos
       }
-    });
+    };
   };
 }
 

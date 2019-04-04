@@ -8,7 +8,7 @@ describe('todos', function() {
   describe('reducer', () => {
     context(`${LOADING}アクションの場合`, () => {
       it('ロード中にする', () => {
-        const s = todos(initState(), {
+        const [s] = todos(initState(), {
           type: LOADING
         });
         assert(s.loading === true);
@@ -35,7 +35,7 @@ describe('todos', function() {
           ...initState(),
           loading: true
         };
-        state = todos(b, {
+        [state] = todos(b, {
           type: LOADED,
           payload: {
             todos: payloadTodos
@@ -77,9 +77,9 @@ describe('todos', function() {
         }
       ];
       context('"active"の場合', () => {
-        let store;
+        let state;
         beforeEach(() => {
-          store = todos(
+          [state] = todos(
             { ...initState(), records },
             {
               type: CHANGE_VISIBLE_FILTER,
@@ -90,11 +90,11 @@ describe('todos', function() {
           );
         });
         it('フィルタを"active"にする', () => {
-          const { filter } = store;
+          const { filter } = state;
           assert(filter === 'active');
         });
         it('表示対象レコードを未完了のTodoにする', () => {
-          const { visibleRecords } = store;
+          const { visibleRecords } = state;
           assert(visibleRecords.length === 1);
           const [t] = visibleRecords;
           const [r] = records;
@@ -103,9 +103,9 @@ describe('todos', function() {
         });
       });
       context('"completed"の場合', () => {
-        let store;
+        let state;
         beforeEach(() => {
-          store = todos(
+          [state] = todos(
             { ...initState(), records },
             {
               type: CHANGE_VISIBLE_FILTER,
@@ -116,11 +116,11 @@ describe('todos', function() {
           );
         });
         it('フィルタを"completed"にする', () => {
-          const { filter } = store;
+          const { filter } = state;
           assert(filter === 'completed');
         });
         it('表示対象レコードを完了のTodoにする', () => {
-          const { visibleRecords } = store;
+          const { visibleRecords } = state;
           assert(visibleRecords.length === 1);
           const [t] = visibleRecords;
           const [, r] = records;
@@ -129,9 +129,9 @@ describe('todos', function() {
         });
       });
       context('"all"の場合', () => {
-        let store;
+        let state;
         beforeEach(() => {
-          store = todos(
+          [state] = todos(
             { ...initState(), records },
             {
               type: CHANGE_VISIBLE_FILTER,
@@ -142,11 +142,11 @@ describe('todos', function() {
           );
         });
         it('フィルタを"all"にする', () => {
-          const { filter } = store;
+          const { filter } = state;
           assert(filter === 'all');
         });
         it('表示対象レコードをすべてのTodoにする', () => {
-          const { visibleRecords } = store;
+          const { visibleRecords } = state;
           assert(visibleRecords.length === 2);
           const [t1, t2] = visibleRecords;
           const [r1, r2] = records;

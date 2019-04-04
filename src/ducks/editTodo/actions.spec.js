@@ -1,6 +1,5 @@
 const assert = require('power-assert');
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import { createMockStore } from '@ushiboy/cyclone-mock-store';
 import {
   LOADING,
   LOADED,
@@ -9,8 +8,9 @@ import {
   SAVE_SUCCESS,
   REMOVE_SUCCESS,
   fetchById,
-  save,
-  remove
+  fetchProcessById,
+  saveProcess,
+  removeProcess
 } from './actions.js';
 import { initState } from './reducers.js';
 import {
@@ -20,12 +20,10 @@ import {
 import { assertEqualTodo, assertEqualDate } from '../../testHelper.js';
 
 const storage = new MemoryStorage();
-const middlewares = [
-  thunk.withExtraArgument({
-    todoRepository: new LocalStorageRepository(storage)
-  })
-];
-const mockStore = configureMockStore(middlewares);
+const extra = {
+  todoRepository: new LocalStorageRepository(storage)
+};
+const { mockDispatcher } = createMockStore();
 
 describe('editTodo', function() {
   describe('actions', () => {
@@ -52,18 +50,26 @@ describe('editTodo', function() {
       storage.clear();
     });
     describe('fetchById()', () => {
+      let store;
+      beforeEach(() => {
+        store = mockDispatcher(extra);
+        return store.dispatch(fetchById(1));
+      });
+      it('LOADINGアクションを実行する', () => {
+        const [a] = store.getActions();
+        assert(a.type === LOADING);
+        assert(a.payload.id === 1);
+      });
+    });
+    describe('fetchProcessById()', () => {
       context('該当データが存在する場合', () => {
         let store;
         beforeEach(() => {
-          store = mockStore({ editTodo: initState() });
-          return store.dispatch(fetchById(1));
+          store = mockDispatcher(extra);
+          return store.dispatch(fetchProcessById(1));
         });
-        it('データ取得前にLOADINGアクションを実行する', () => {
+        it('LOADEDアクションを実行する', () => {
           const [a] = store.getActions();
-          assert(a.type === LOADING);
-        });
-        it('データ取得完了後にLOADEDアクションを実行する', () => {
-          const [, a] = store.getActions();
           assert(a.type === LOADED);
 
           const { todo } = a.payload;
@@ -75,20 +81,16 @@ describe('editTodo', function() {
       context('該当データが存在しない場合', () => {
         let store;
         beforeEach(() => {
-          store = mockStore({ editTodo: initState() });
-          return store.dispatch(fetchById(99));
+          store = mockDispatcher(extra);
+          return store.dispatch(fetchProcessById(99));
         });
-        it('データ取得前にLOADINGアクションを実行する', () => {
+        it('LOAD_FAILEDアクションを実行する', () => {
           const [a] = store.getActions();
-          assert(a.type === LOADING);
-        });
-        it('データ取得失敗後にLOAD_FAILEDアクションを実行する', () => {
-          const [, a] = store.getActions();
           assert(a.type === LOAD_FAILED);
         });
       });
     });
-    describe('save()', () => {
+    describe('saveProcess()', () => {
       context('新規データの追加の場合', () => {
         const draft = {
           id: -1,
@@ -99,15 +101,14 @@ describe('editTodo', function() {
         };
         let store;
         beforeEach(() => {
-          store = mockStore({
-            editTodo: {
-              ...initState(),
-              fields: {
-                ...draft
-              }
+          const editTodo = {
+            ...initState(),
+            fields: {
+              ...draft
             }
-          });
-          return store.dispatch(save());
+          };
+          store = mockDispatcher(extra);
+          return store.dispatch(saveProcess(editTodo));
         });
         it('SAVE_SUCCESSアクションを実行する', () => {
           const [a] = store.getActions();
@@ -129,15 +130,14 @@ describe('editTodo', function() {
         };
         let store;
         beforeEach(() => {
-          store = mockStore({
-            editTodo: {
-              ...initState(),
-              fields: {
-                ...modified
-              }
+          const editTodo = {
+            ...initState(),
+            fields: {
+              ...modified
             }
-          });
-          return store.dispatch(save());
+          };
+          store = mockDispatcher(extra);
+          return store.dispatch(saveProcess(editTodo));
         });
         it('SAVE_SUCCESSアクションを実行する', () => {
           const [a] = store.getActions();
@@ -158,15 +158,14 @@ describe('editTodo', function() {
         };
         let store;
         beforeEach(() => {
-          store = mockStore({
-            editTodo: {
-              ...initState(),
-              fields: {
-                ...draft
-              }
+          const editTodo = {
+            ...initState(),
+            fields: {
+              ...draft
             }
-          });
-          return store.dispatch(save());
+          };
+          store = mockDispatcher(extra);
+          return store.dispatch(saveProcess(editTodo));
         });
         it('INVALIDアクションを実行する', () => {
           const [a] = store.getActions();
@@ -175,18 +174,17 @@ describe('editTodo', function() {
         });
       });
     });
-    describe('remove()', () => {
+    describe('removeProcess()', () => {
       let store;
       beforeEach(() => {
-        store = mockStore({
-          editTodo: {
-            ...initState(),
-            fields: {
-              ...todos[0]
-            }
+        const editTodo = {
+          ...initState(),
+          fields: {
+            ...todos[0]
           }
-        });
-        return store.dispatch(remove());
+        };
+        store = mockDispatcher(extra);
+        return store.dispatch(removeProcess(editTodo));
       });
       it('REMOVE_SUCCESSアクションを実行する', () => {
         const [a] = store.getActions();

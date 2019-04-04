@@ -3,7 +3,7 @@ import type { AppState, RouteState } from '../../../ducks/types.js';
 import type { EditTodoState } from '../../../ducks/editTodo/types.js';
 import type { ConnectedProps, Dispatch } from '../../../ducks/types.js';
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect } from '@ushiboy/react-cyclone';
 import { LoadingMask } from '../../components/LoadingMask/LoadingMask.js';
 import { Toast } from '../../components/Toast/Toast.js';
 import { Link } from 'tridoron';
@@ -51,7 +51,7 @@ export class TodoForm extends React.Component<Props> {
 
     let removeButton = null;
     if (!draft) {
-      removeButton = <RemoveButton dispatch={dispatch} />;
+      removeButton = <RemoveButton dispatch={dispatch} editTodo={editTodo} />;
     }
     return (
       <div className={`card ${styles.todoForm}`} data-test="todo-form">
@@ -136,7 +136,8 @@ function TitleText(props: TitleTextProps) {
 }
 
 type RemoveButtonProps = {
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  editTodo: EditTodoState
 };
 
 function RemoveButton(props: RemoveButtonProps) {
